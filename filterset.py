@@ -2,7 +2,6 @@ from django.http import QueryDict
 import django_filters
 
 from django_filters_stoex.filterset import StoexFilterSet
-from spl_members.models import Member as Staffmember
 from .models import Banaction, Bannee
 from django.db import models
 from django import forms
