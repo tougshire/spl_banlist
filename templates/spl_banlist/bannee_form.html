@@ -1,0 +1,117 @@
+{% extends './_form.html' %}
+{% block content %}
+  {% if form.errors %}{{ form.errors }}{% endif %}
+  <form id="form_bannee" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name='opener' id="input_opener">
+    <div class="form">
+      {% csrf_token %}
+      {% for field in form.hidden_fields %}
+        {{ field }}
+      {% endfor %}
+      {% for field in form.visible_fields%}
+      <div class="field-wrapper">
+        {% if field.errors %}
+          <div class="errors">
+            {{ field.errors }}
+          </div>
+        {% endif %}
+        <div class="control">
+          <div class="label">
+            {{ field.label_tag }}
+          </div>
+          <div class="field">
+            {{ field }}
+          </div>
+        </div>
+        <div class="help_text">
+          {{ field.help_text}}
+        </div>
+      </div>
+    {% endfor %}
+      <div class="formsetaccessory formsetaccessory--titlediv">
+        <div><h3 id="h3_banneephotos" class="formsetaccessory__titleel">Photo</h3></div>
+        <div><button type="button" id="button_addbanneephoto" class="formsetaccessory__button js_vmargins" data-vmarginsource="h3_banneephotos">Add Photo</button></div>
+      </div>
+
+      {{ banneephotos.management_form }}
+      {% if banneephotos.errors %}{{ banneephotos.errors }}{% endif %}
+      {% for banneephotoform in banneephotos.forms %}
+        {% if banneephotoform.errors %}{{ banneephotoform.errors }}{% endif %}
+        {% if banneephotoform.id.value  %}
+          <div id="div_banneephotoform_{{ banneephotoform.id.value }}" class="banneephotoformsetform"  >
+            {% for hiddenfield in banneephotoform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.title %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.when_taken %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.photofile %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.DELETE %}
+          </div>
+        {% else %}
+          <div class="banneephotoformsetform banneephotonewform" >
+            {% for hiddenfield in banneephotoform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.title %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.when_taken %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.photofile %}
+            {% include 'touglates/form_field.html' with field=banneephotoform.DELETE %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <table>
+        {% for banneephoto in object.banneephoto_set.all %}
+          <tr id="tr_banneephoto_{{ banneephoto.id }}">
+            <td><button type="button" id="button_editbanneephoto_{{ banneephoto.id }}" data-formid="div_banneephotoform_{{ banneephoto.id }}" data-displayid="tr_banneephoto_{{ banneephoto.id }}" class="banneephoto_edit_button">edit</button></td><td>{{ banneephoto.when }}</td><td>{{ banneephoto.content }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+
+      <button type="Submit">Submit</button>
+
+    </div>
+
+  </form>
+  <script>
+    if(window.opener) {
+      document.getElementById('input_opener').value = window.opener.location.href
+    }
+  </script>
+  {% endblock %}
+  {% block bottomscript %}
+  {{ block.super }}
+  <script>
+
+
+    function enableRelatedFormsets(formsetClasses, editButtonClasses, newFormClass, addButtonIds) {
+      formsetClassList = formsetClasses.split(",")
+      editButtonClassList = editButtonClasses.split(",")
+      addButtonIdList = addButtonIds.split(",")
+      if(!(formsetClassList.length == editButtonClassList.length == addButtonIdList.length)) {
+          return;
+      }
+      for(i=0; i < formsetClassList.length; i++) {
+        let editButtons = document.getElementsByClassName(editButtonClassList[i])
+        for( editButton of editButtons){
+          editButton.addEventListener('click', function(e){
+          e.preventDefault()
+          enableFormsetForm(e.target.dataset.formid, e.target.dataset.displayid)
+          })
+        }
+
+        document.getElementById(addButtonIdList[i]).addEventListener('click', function(e){
+          e.preventDefault()
+          enableAddFormsetForm(newFormClass)
+        })
+        let formsetforms = document.getElementsByClassName(formsetClassList[i])
+        for( formsetform of formsetforms ){
+          formsetform.style.display="none"
+        }
+      }
+    }
+    enableRelatedFormsets("banneephotoformsetform","banneephoto_edit_button","banneephotonewform", "button_addbanneephoto")
+  </script>
+{% endblock %}
+
+

@@ -1,0 +1,14 @@
+{% extends './_form.html' %}
+
+{% block content %}
+  {% include './bannee_menu.html' %}
+  <h2>{{ object }}</h2>
+  {% include './bannee_form.html' %}
+  {% include './bannee_menu.html' %}
+
+{% endblock %}
+{% block bottomscript %}
+{{ block.super }}
+{% endblock %}
+
+

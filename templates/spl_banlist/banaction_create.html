@@ -1,0 +1,14 @@
+{% extends './_form.html' %}
+
+{% block content %}
+  {% include './banaction_menu.html' %}
+  <h2>Banaction</h2>
+  {% include './banaction_form.html' %}
+  {% include './banaction_menu.html' %}
+
+{% endblock %}
+{% block bottomscript %}
+{{ block.super }}
+{% endblock %}
+
+

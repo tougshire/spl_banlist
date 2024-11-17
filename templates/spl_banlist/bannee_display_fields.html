@@ -1,0 +1,18 @@
+<div class="detail">
+  {% include 'touglates/detail_field.html' with label=bannee_labels.title field=object.title %}
+  {% include 'touglates/detail_field.html' with label=bannee_labels.when_submitted field=object.when_submitted %}
+  {% include 'touglates/detail_field.html' with label=bannee_labels.submitter field=object.submitter %}
+  {% include 'touglates/detail_field.html' with label=bannee_labels.when_started field=object.when_started %}
+
+  <h3>Photos</h3>
+  <div class="attached-gallery">
+    {% for banneephoto in object.banneephoto_set.all %}
+      <div class="relatedset relatedbanneephoto attached-photo id="div_banneenote-{{ forloop.counter0 }}">
+        <div class="attached-photo-title">{{ banneephoto }}</div>
+        <div class="attached-photo-img"><img src="{{ banneephoto.photofile.url }}"></div>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+

@@ -1,0 +1,26 @@
+<div class="menu app-menu">
+
+  {% if perms.spl_banlist.view_banaction %}
+    {% if 'banaction-' in request.resolver_match.url_name %}
+      <div class="menu-banaction menu-here">
+        <a href="{% url 'spl_banlist:banaction-list' %}">Bans</a>
+      </div>
+    {% else %}
+      <div class="menu-banaction">
+        <a href="{% url 'spl_banlist:banaction-list' %}">Bans</a>
+      </div>
+    {% endif %}
+  {% endif %}
+
+ {% if perms.spl_banlist.view_bannee %}
+  {% if 'bannee-' in request.resolver_match.url_name %}
+    <div class="menu-bannee menu-here">
+      <a href="{% url 'spl_banlist:bannee-list' %}">Bannees</a>
+    </div>
+  {% else %}
+    <div class="menu-bannee">
+      <a href="{% url 'spl_banlist:bannee-list' %}">Bannees</a>
+    </div>
+  {% endif %}
+{% endif %}
+</div>
