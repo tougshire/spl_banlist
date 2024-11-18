@@ -182,7 +182,11 @@ textarea.widthxlong {
 
 div.attached-gallery {
     display:flex;
+    width:100%;
 }
-div.attached-image img {
+div.attached-gallery > div {
+    max-width:30%;
+}
+div.attached-gallery img {
     max-width:90%;
 }

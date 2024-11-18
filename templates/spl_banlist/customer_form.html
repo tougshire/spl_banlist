@@ -29,8 +29,8 @@
       </div>
     {% endfor %}
       <div class="formsetaccessory formsetaccessory--titlediv">
-        <div><h3 id="h3_customerphotos" class="formsetaccessory__titleel">Photo</h3></div>
-        <div><button type="button" id="button_addcustomerphoto" class="formsetaccessory__button js_vmargins" data-vmarginsource="h3_customerphotos">Add Photo</button></div>
+        <div><h3 id="h3_customerphotos" class="formsetaccessory__titleel">Photos</h3></div>
+        <div><button type="button" id="button_addcustomerphoto" class="formsetaccessory__button js_vmargins" data-formclass="customerphotonewform" data-vmarginsource="h3_customerphotos">Add Photo</button></div>
       </div>
 
       {{ customerphotos.management_form }}
@@ -62,10 +62,49 @@
       <table>
         {% for customerphoto in object.customerphoto_set.all %}
           <tr id="tr_customerphoto_{{ customerphoto.id }}">
-            <td><button type="button" id="button_editcustomerphoto_{{ customerphoto.id }}" data-formid="div_customerphotoform_{{ customerphoto.id }}" data-displayid="tr_customerphoto_{{ customerphoto.id }}" class="customerphoto_edit_button">edit</button></td><td>{{ customerphoto.when }}</td><td>{{ customerphoto.content }}</td>
+            <td><button type="button" id="button_editcustomerphoto_{{ customerphoto.id }}" data-formid="div_customerphotoform_{{ customerphoto.id }}" data-displayid="tr_customerphoto_{{ customerphoto.id }}" class="customerphoto_edit_button">edit</button></td><td>{{ customerphoto.when_taken }}</td><td><img src="{{ customerphoto.photofile.url }}" width="50%" /></td>
           </tr>
         {% endfor %}
       </table>
+
+      <div class="formsetaccessory formsetaccessory--titlediv">
+        <div><h3 id="h3_customernotes" class="formsetaccessory__titleel">Notes</h3></div>
+        <div><button type="button" id="button_addcustomernote" class="formsetaccessory__button js_vmargins" data-formclass="customernotenewform" data-vmarginsource="h3_customernotes">Add Note</button></div>
+      </div>
+
+      {{ customernotes.management_form }}
+      {% if customernotes.errors %}{{ customernotes.errors }}{% endif %}
+      {% for customernoteform in customernotes.forms %}
+        {% if customernoteform.errors %}{{ customernoteform.errors }}{% endif %}
+        {% if customernoteform.id.value  %}
+          <div id="div_customernoteform_{{ customernoteform.id.value }}" class="customernoteformsetform"  >
+            {% for hiddenfield in customernoteform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=customernoteform.when %}
+            {% include 'touglates/form_field.html' with field=customernoteform.content %}
+            {% include 'touglates/form_field.html' with field=customernoteform.DELETE %}
+          </div>
+        {% else %}
+          <div class="customernoteformsetform customernotenewform" >
+            {% for hiddenfield in customernoteform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=customernoteform.when %}
+            {% include 'touglates/form_field.html' with field=customernoteform.content %}
+            {% include 'touglates/form_field.html' with field=customernoteform.DELETE %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <table>
+        {% for customernote in object.customernote_set.all %}
+          <tr id="tr_customernote_{{ customernote.id }}">
+            <td><button type="button" id="button_editcustomernote_{{ customernote.id }}" data-formid="div_customernoteform_{{ customernote.id }}" data-displayid="tr_customernote_{{ customernote.id }}" class="customernote_edit_button">edit</button></td><td>{{ customernote.when }}</td><td>{{ customernote.content }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+
 
 
       <button type="Submit">Submit</button>
@@ -84,14 +123,19 @@
   <script>
 
 
-    function enableRelatedFormsets(formsetClasses, editButtonClasses, newFormClass, addButtonIds) {
+    function enableRelatedFormsets(formsetClasses, editButtonClasses, newFormClasses, addButtonIds) {
+
       formsetClassList = formsetClasses.split(",")
       editButtonClassList = editButtonClasses.split(",")
+      newFormClassList = newFormClasses.split(",")
       addButtonIdList = addButtonIds.split(",")
-      if(!(formsetClassList.length == editButtonClassList.length == addButtonIdList.length)) {
+
+
+      if(!((formsetClassList.length == editButtonClassList.length) && (formsetClassList.length == addButtonIdList.length))) {
           return;
       }
       for(i=0; i < formsetClassList.length; i++) {
+
         let editButtons = document.getElementsByClassName(editButtonClassList[i])
         for( editButton of editButtons){
           editButton.addEventListener('click', function(e){
@@ -99,10 +143,11 @@
           enableFormsetForm(e.target.dataset.formid, e.target.dataset.displayid)
           })
         }
-
+        alert(newFormClassList[i])
         document.getElementById(addButtonIdList[i]).addEventListener('click', function(e){
+
           e.preventDefault()
-          enableAddFormsetForm(newFormClass)
+          enableAddFormsetForm(e.target.dataset.formclass)
         })
         let formsetforms = document.getElementsByClassName(formsetClassList[i])
         for( formsetform of formsetforms ){
@@ -110,7 +155,7 @@
         }
       }
     }
-    enableRelatedFormsets("customerphotoformsetform","customerphoto_edit_button","customerphotonewform", "button_addcustomerphoto")
+    enableRelatedFormsets("customerphotoformsetform,customernoteformsetform","customerphoto_edit_button,customernote_edit_button","customerphotonewform,customernotenewform", "button_addcustomerphoto,button_addcustomernote")
   </script>
 {% endblock %}
 

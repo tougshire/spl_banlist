@@ -79,3 +79,6 @@ class CustomerphotoForm(forms.ModelForm):
 CustomerCustomerphotoFormset = inlineformset_factory(
     Customer, Customerphoto, form=CustomerphotoForm, extra=10
 )
+CustomerCustomernoteFormset = inlineformset_factory(
+    Customer, Customernote, form=CustomernoteForm, extra=10
+)

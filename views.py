@@ -25,6 +25,7 @@ from .filterset import BanactionFilter, CustomerFilter
 from .forms import (
     BanactionForm,
     CustomerCustomerphotoFormset,
+    CustomerCustomernoteFormset,
     CustomerForm,
 )
 from .models import Banaction, Customer
@@ -220,6 +221,7 @@ class CustomerCreate(PermissionRequiredMixin, CreateView):
 
         formsetclasses = {
             "customerphotos": CustomerCustomerphotoFormset,
+            "customernotes": CustomerCustomernoteFormset,
         }
 
         for formsetkey, formsetclass in formsetclasses.items():
@@ -237,6 +239,8 @@ class CustomerCreate(PermissionRequiredMixin, CreateView):
 
         formsetclasses = {
             "customerphotos": CustomerCustomerphotoFormset,
+            "customernotes": CustomerCustomernoteFormset,
+
         }
         formsetdata = {}
         formsets_valid = True
@@ -286,6 +290,8 @@ class CustomerUpdate(PermissionRequiredMixin, UpdateView):
 
         formsetclasses = {
             "customerphotos": CustomerCustomerphotoFormset,
+            "customernotes": CustomerCustomernoteFormset,
+
         }
 
         for formsetkey, formsetclass in formsetclasses.items():
@@ -305,7 +311,9 @@ class CustomerUpdate(PermissionRequiredMixin, UpdateView):
 
         formsetclasses = {
             "customerphotos": CustomerCustomerphotoFormset,
+            "customernotes": CustomerCustomernoteFormset,
         }
+
         formsetdata = {}
         formsets_valid = True
         for formsetkey, formsetclass in formsetclasses.items():

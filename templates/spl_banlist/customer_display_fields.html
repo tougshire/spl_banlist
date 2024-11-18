@@ -1,8 +1,7 @@
 <div class="detail">
-  {% include 'touglates/detail_field.html' with label=customer_labels.title field=object.title %}
-  {% include 'touglates/detail_field.html' with label=customer_labels.start_date field=object.start_date %}
-  {% include 'touglates/detail_field.html' with label=customer_labels.submitter field=object.submitter %}
-  {% include 'touglates/detail_field.html' with label=customer_labels.when_started field=object.when_started %}
+  {% include 'touglates/detail_field.html' with label=customer_labels.name_full field=object.name_full %}
+  {% include 'touglates/detail_field.html' with label=customer_labels.name_prefered field=object.name_prefered %}
+  {% include 'touglates/detail_field.html' with label=customer_labels.description field=object.description %}
 
   <h3>Photos</h3>
   <div class="attached-gallery">
@@ -13,6 +12,20 @@
       </div>
     {% endfor %}
   </div>
+
+  <h3>Bans</h3>
+    {% for banaction in object.banaction_set.all %}
+      <div class="relatedset relatedbanaction id="div_banaction-{{ forloop.counter0 }}">
+        {% include 'touglates/detail_field.html' with label="Ban:" field=banaction %}
+      </div>
+    {% endfor %}
+
+    <h3>Notes</h3>
+    {% for note in object.customernote_set.all %}
+      <div class="relatedset relatednote id="div_note-{{ forloop.counter0 }}">
+        {% include 'touglates/detail_fields.html' with label="Note:" field_1=note.when field_2=note.content %}
+      </div>
+    {% endfor %}
 
 </div>
 
