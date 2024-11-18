@@ -24,10 +24,10 @@ class BanactionForm(forms.ModelForm):
         fields = [
             "title",
             "customer",
-            "banaction_summary",
-            "when_submitted",
+            "summary",
+            "start_date",
             "submitter",
-            "when_lifted",
+            "expiration",
         ]
         widgets = {
             "customer": TouglatesRelatedSelect(
@@ -44,8 +44,8 @@ class BanactionForm(forms.ModelForm):
                     "add_url": reverse_lazy("spl_banlist:staffer-popup"),
                 },
             ),
-            "when_submitted": AdminDateWidget(),
-            "when_lifted": AdminDateWidget(),
+            "start_date": AdminDateWidget(),
+            "expiration": AdminDateWidget(),
         }
 
 

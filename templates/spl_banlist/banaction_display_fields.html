@@ -3,9 +3,9 @@
   {% include 'touglates/detail_field.html' with label=banaction_labels.title field=object.title %}
   {% url 'spl_banlist:customer-update' object.customer.pk as customer_url %}
   {% include 'touglates/detail_field.html' with label=banaction_labels.customer field='<a href="'|add:customer_url|add:'" target="_blank">'|add:object.customer.name_full|add:'</a>'|safe %}
-  {% include 'touglates/detail_field.html' with label=banaction_labels.when_submitted field=object.when_submitted %}
+  {% include 'touglates/detail_field.html' with label=banaction_labels.start_date field=object.start_date %}
   {% include 'touglates/detail_field.html' with label=banaction_labels.submitter field=object.submitter %}
-  {% include 'touglates/detail_field.html' with label=banaction_labels.when_lifted field=object.when_lifted %}
+  {% include 'touglates/detail_field.html' with label=banaction_labels.expiration field=object.expiration %}
 
   <h3>Customer Photos</h3>
   <div class="attached-gallery">

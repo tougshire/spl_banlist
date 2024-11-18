@@ -4,6 +4,9 @@ from spl_members.models import Member as Staffmember
 from django.utils.timezone import now
 from django.conf import settings
 
+def seven_days_hence():
+    return now() + timedelta(days=7)
+
 class Customer(models.Model):
     name_full = models.CharField(
         "name", max_length=80, help_text="The name of the customer"
@@ -21,9 +24,9 @@ class Customer(models.Model):
     )
 
     def banned_until(self):
-        active_bans = Banaction.objects.filter(customer=self,when_lifted__gt=now().date()).order_by("-when_lifted")
+        active_bans = Banaction.objects.filter(customer=self,expiration__gt=now().date()).order_by("-expiration")
         if active_bans.exists():
-            return active_bans.first().when_lifted
+            return active_bans.first().expiration
         return None
 
     def __str__(self):
@@ -68,12 +71,12 @@ class Banaction(models.Model):
     )
     expiration = models.DateField(
         "expiration",
-        default=lambda: (now() + timedelta(years=10)).date,
-        help_text="The date as of which the customer is no longer banned. The default is 10 years hence which is effectively indefinite",
+        default=seven_days_hence,
+        help_text="The date as of which the customer is no longer banned. For an indefinite ban, set the date far in the future (ie ten years)",
     )
 
     def __str__(self):
-        ordering = self.when_submitted
+        ordering = self.start_date
         if self.title:
             return self.title
         else:

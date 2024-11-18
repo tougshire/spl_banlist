@@ -49,11 +49,11 @@
         {% if 'customer' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field=banaction_labels.customer %}
         {% endif %}
-        {% if 'banaction_summary' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=banaction_labels.banaction_summary %}
+        {% if 'summary' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field=banaction_labels.summary %}
         {% endif %}
-        {% if 'when_lifted' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=banaction_labels.when_lifted %}
+        {% if 'expiration' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field=banaction_labels.expiration %}
         {% endif %}
 
       </div>
@@ -68,11 +68,11 @@
           {% if 'customer' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=banaction.customer %}
           {% endif %}
-          {% if 'when_submitted' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=banaction.banaction_summary %}
+          {% if 'start_date' in show_columns or not show_columns %}
+            {% include 'touglates/list_field.html' with field=banaction.summary %}
           {% endif %}
           {% if 'submitter' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=banaction.when_lifted %}
+            {% include 'touglates/list_field.html' with field=banaction.expiration %}
           {% endif %}
 
         </div>

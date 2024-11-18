@@ -13,7 +13,7 @@ class BanactionFilter(StoexFilterSet):
 
     combined_text_search = CrossFieldSearchFilter(
         label="Text Search",
-        field_name="title,customer__name_full,customer__name_prefered,banaction_summary,submitter__name_full",
+        field_name="title,customer__name_full,customer__name_prefered,summary,submitter__name_full",
         lookup_expr="icontains",
     )
     customer = django_filters.ModelMultipleChoiceFilter(
@@ -22,19 +22,19 @@ class BanactionFilter(StoexFilterSet):
         label="Customer",
         queryset=Customer.objects.all(),
     )
-    banaction_summary = django_filters.CharFilter(
-        field_name="banaction_summary",
+    summary = django_filters.CharFilter(
+        field_name="summary",
         label="Summary",
         initial="Test"
     )
-    when_lifted = ExpandedDateRangeFilter(
-        field_name="when_lifted",
+    expiration = ExpandedDateRangeFilter(
+        field_name="expiration",
         help_text="Select \"After Today\" for currently active bans"
     )
     orderbyfields = django_filters.OrderingFilter(
         fields=(
-            "when_lifted",
-            "when_submitted",
+            "expiration",
+            "start_date",
             "customer",
             "staffer",
         ),
@@ -52,15 +52,15 @@ class CustomerFilter(StoexFilterSet):
         field_name="name_full, name_prefered",
         lookup_expr="icontains",
     )
-    banaction__when_lifted = ExpandedDateRangeFilter(
-        field_name="banaction__when_lifted",
+    banaction__expiration = ExpandedDateRangeFilter(
+        field_name="banaction__expiration",
         label="Ban Lift Date",
         help_text="Select \"After Today\" for currently active bans"
     )
 
     orderbyfields = django_filters.OrderingFilter(
         fields=(
-            "when_lifted",
+            "expiration",
             "name_prefered",
             "name_full",
         ),
