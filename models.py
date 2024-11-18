@@ -74,14 +74,18 @@ class Banaction(models.Model):
         default=seven_days_hence,
         help_text="The date as of which the customer is no longer banned. For an indefinite ban, set the date far in the future (ie ten years)",
     )
+    def is_expired(self):
+        if self.expiration > now().date():
+            return False
+        return True
 
     def __str__(self):
         ordering = self.start_date
         if self.title:
             return self.title
         else:
-            return "{} until {}".format(
-                self.customer, self.expiration
+            return "{} until {} {}".format(
+                self.customer, self.expiration, '(expired)' if self.is_expired() else ""
             )
 
     class Meta:

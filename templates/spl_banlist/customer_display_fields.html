@@ -16,7 +16,7 @@
   <h3>Bans</h3>
     {% for banaction in object.banaction_set.all %}
       <div class="relatedset relatedbanaction id="div_banaction-{{ forloop.counter0 }}">
-        {% include 'touglates/detail_field.html' with label="Ban:" field=banaction %}
+        {% include 'touglates/detail_fields.html' with label="Ban:" field_1=banaction field_2=banaction.is_expired %}
       </div>
     {% endfor %}
 
