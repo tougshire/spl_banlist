@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Banaction,Banactionnote,Customer,Customernote
+from .models import Banaction,Customer,Customernote
 
-for model in [Banaction,Banactionnote,Customer,Customernote]:
+for model in [Banaction,Customer,Customernote]:
     admin.site.register(model)

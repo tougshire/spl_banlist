@@ -1,13 +1,12 @@
 <div class="form">
-  {{ form.errors }}
-  {{ banactionnotes.errors }}
+  {% if form.errors %}{{ form.errors }}{% endif %}
   {% for message in messages %} {{ message }} {% endfor %}
   <form id="form_banaction" method="POST" enctype="multipart/form-data">
   {{ form.media }}
     {% csrf_token %}
 
       <div id="title">
-        {% include 'touglates/form_field.html' with field=form.title %}
+        {% include 'touglates/form_field.html' with field=form.title label_tag="Title (Optional)" %}
      </div>
       <div id="div_customer">
         {% include 'touglates/form_field.html' with field=form.customer %}
@@ -25,67 +24,11 @@
         {% include 'touglates/form_field.html' with field=form.when_lifted %}
       </div>
 
-      <div class="formsetaccessory formsetaccessory--titlediv">
-        <div><h3 id="h3_banactionnotes" class="formsetaccessory__titleel">Notes</h3></div>
-        <div><button type="button" id="button_addbanactionnote" class="formsetaccessory__button js_vmargins" data-vmarginsource="h3_customernotes">Add Note</button></div>
-      </div>
-
-      {{ banactionnotes.management_form }}
-      {% if banactionnotes.errors %}{{ banactionnotes.errors }}{% endif %}
-      {% for banactionnoteform in banactionnotes.forms %}
-        {% if banactionnoteform.errors %}{{ banactionnoteform.errors }}{% endif %}
-        {% if banactionnoteform.id.value  %}
-          <div id="div_banactionnoteform_{{ banactionnoteform.id.value }}" class="banactionnoteformsetform"  >
-            {% for hiddenfield in banactionnoteform.hidden_fields %}
-              {{ hiddenfield }}
-            {% endfor %}
-            {% include 'touglates/form_field.html' with field=banactionnoteform.when %}
-            {% include 'touglates/form_field.html' with field=banactionnoteform.content %}
-            {% include 'touglates/form_field.html' with field=banactionnoteform.DELETE %}
-          </div>
-        {% else %}
-          <div class="banactionnoteformsetform banactionnotenewform" >
-            {% for hiddenfield in banactionnoteform.hidden_fields %}
-              {{ hiddenfield }}
-            {% endfor %}
-            {% include 'touglates/form_field.html' with field=banactionnoteform.when %}
-            {% include 'touglates/form_field.html' with field=banactionnoteform.content %}
-            {% include 'touglates/form_field.html' with field=banactionnoteform.DELETE %}
-          </div>
-        {% endif %}
-      {% endfor %}
-      <table>
-        {% for banactionnote in object.banactionnote_set.all %}
-          <tr id="tr_banactionnote_{{ banactionnote.id }}">
-            <td><button type="button" id="button_editbanactionnote_{{ banactionnote.id }}" data-formid="div_banactionnoteform_{{ banactionnote.id }}" data-displayid="tr_banactionnote_{{ banactionnote.id }}" class="banactionnote_edit_button">edit</button></td><td>{{ banactionnote.when }}</td><td>{{ banactionnote.content }}</td>
-          </tr>
-        {% endfor %}
-      </table>
-
-
       <button type="Submit">Submit</button>
 
     </div>
 
   </form>
-
-  <script>
-    let banactionnoteEditButtons = document.getElementsByClassName('banactionnote_edit_button')
-    for( banactionnoteEditButton of banactionnoteEditButtons){
-      banactionnoteEditButton.addEventListener('click', function(e){
-        e.preventDefault()
-        enableFormsetForm(e.target.dataset.formid, e.target.dataset.displayid)
-      })
-    }
-    let banactionnoteforms = document.getElementsByClassName("banactionnoteformsetform")
-    for( banactionnoteform of banactionnoteforms ){
-      banactionnoteform.style.display="none"
-    }
-    document.getElementById('button_addbanactionnote').addEventListener('click', function(e){
-      e.preventDefault()
-      enableAddFormsetForm('banactionnotenewform')
-    })
-  </script>
 
 
 

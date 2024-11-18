@@ -23,12 +23,11 @@ from touglates.views import make_labels
 
 from .filterset import BanactionFilter, CustomerFilter
 from .forms import (
-    BanactionBanactionnoteFormset,
     BanactionForm,
     CustomerCustomerphotoFormset,
     CustomerForm,
 )
-from .models import Banaction, Banactionnote, Customer
+from .models import Banaction, Customer
 
 logger = logging.getLogger(__name__)
 
@@ -42,9 +41,7 @@ class BanactionCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
-        formsetclasses = {
-            "banactionnotes": BanactionBanactionnoteFormset,
-        }
+        formsetclasses = {}
 
         for formsetkey, formsetclass in formsetclasses.items():
             if self.request.POST:
@@ -61,9 +58,7 @@ class BanactionCreate(PermissionRequiredMixin, CreateView):
 
         self.object = form.save(commit=False)
 
-        formsetclasses = {
-            "banactionnotes": BanactionBanactionnoteFormset,
-        }
+        formsetclasses = {}
         formsetdata = {}
         formsets_valid = True
         for formsetkey, formsetclass in formsetclasses.items():
@@ -113,9 +108,7 @@ class BanactionUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
-        formsetclasses = {
-            "banactionnotes": BanactionBanactionnoteFormset,
-        }
+        formsetclasses = {}
 
         for formsetkey, formsetclass in formsetclasses.items():
             if self.request.POST:
@@ -134,9 +127,7 @@ class BanactionUpdate(PermissionRequiredMixin, UpdateView):
 
         self.object = form.save()
 
-        formsetclasses = {
-            "banactionnotes": BanactionBanactionnoteFormset,
-        }
+        formsetclasses = {}
         formsetdata = {}
         formsets_valid = True
         for formsetkey, formsetclass in formsetclasses.items():
@@ -182,8 +173,6 @@ class BanactionDetail(PermissionRequiredMixin, DetailView):
 
         context_data["banaction_labels"] = make_labels(Banaction)
 
-        context_data["banactionnote_labels"] = make_labels(Banactionnote)
-
         return context_data
 
 
@@ -196,8 +185,6 @@ class BanactionDelete(PermissionRequiredMixin, DeleteView):
 
         context_data = super().get_context_data(**kwargs)
         context_data["banaction_labels"] = make_labels(Banaction)
-        print("tp23be625", context_data["banaction_labels"])
-        context_data["banactionnote_labels"] = make_labels(Banactionnote)
         return context_data
 
 class BanactionList(PermissionRequiredMixin, FilterView):

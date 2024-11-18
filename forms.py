@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from spl_members.models import Member as Staffmember
 from touglates.widgets import TouglatesRelatedSelect
-from .models import Banaction, Banactionnote, Customer, Customernote, Customerphoto
+from .models import Banaction, Customer, Customernote, Customerphoto
 from django.contrib.admin.widgets import AdminDateWidget
 
 
@@ -49,11 +49,6 @@ class BanactionForm(forms.ModelForm):
         }
 
 
-class BanactionnoteForm(forms.ModelForm):
-    class Meta:
-        model = Banactionnote
-        fields = ["banaction", "when", "content"]
-
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -81,9 +76,6 @@ class CustomerphotoForm(forms.ModelForm):
             "when_taken",
         ]
 
-BanactionBanactionnoteFormset = inlineformset_factory(
-    Banaction, Banactionnote, form=BanactionnoteForm, extra=10
-)
 CustomerCustomerphotoFormset = inlineformset_factory(
     Customer, Customerphoto, form=CustomerphotoForm, extra=10
 )

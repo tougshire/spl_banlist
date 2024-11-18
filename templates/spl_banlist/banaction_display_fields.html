@@ -7,14 +7,7 @@
   {% include 'touglates/detail_field.html' with label=banaction_labels.submitter field=object.submitter %}
   {% include 'touglates/detail_field.html' with label=banaction_labels.when_lifted field=object.when_lifted %}
 
-  <h3>Notes</h3><span id="div_banactionNotes">Showing All </span><a href="#" id="a_toggleNotes">Show Flagged</a>
-  {% for banactionnote in object.banactionnote_set.all %}
-    <div class="relatedset relatedbanactionnote level{{ banactionNote.banactionnotelevel }} {% if banactionnote.flagged %} flagged{% endif %}" id="div_banactionnote-{{ forloop.counter0 }}">
-      {% include 'touglates/list_fields.html' with field_1_label='Note:' field_1=banactionnote.when field_2=banactionnote.banactionnotecategory|default_if_none:'' field_3=banactionnote.maintext %}
-    </div>
-  {% endfor %}
-
-  <h3>Photos</h3>
+  <h3>Customer Photos</h3>
   <div class="attached-gallery">
       {% for customerphoto in object.customer.customerphoto_set.all %}
         <div class="relatedset relatedcustomerphoto attached-photo id="div_customernote-{{ forloop.counter0 }}">
@@ -24,4 +17,10 @@
       {% endfor %}
   </div>
 
+  <h3>Customer Notes</h3>
+      {% for customernote in object.customer.customernote_set.all %}
+        <div class="relatedset relatedcustomernote id="div_customernote-{{ forloop.counter0 }}">
+          {% include 'touglates/detail_field.html' with label="Note:" field1=customernote.when field2=customernote.content %}
+        </div>
+      {% endfor %}
 </div>

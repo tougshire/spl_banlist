@@ -1,7 +1,8 @@
-from datetime import date
+from datetime import date, timedelta
 from django.db import models
 from spl_members.models import Member as Staffmember
 from django.utils.timezone import now
+from django.conf import settings
 
 class Customer(models.Model):
     name_full = models.CharField(
@@ -37,38 +38,38 @@ class Banaction(models.Model):
         "title",
         max_length=255,
         blank=True,
-        help_text="A title for the banaction (ex, Benjamin, three weeks, disruptive behavior )",
+        help_text="A title for the ban (ex, Benjamin, three weeks, disruptive behavior ).  This is optional. The date and customer's name will be used if left blank",
     )
     customer = models.ForeignKey(
         Customer,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        help_text="The customer for  whom the apointment is made",
+        help_text="The customer for whom the ban is applies",
     )
-    banaction_summary = models.TextField(
-        "action summary",
+    summary = models.TextField(
+        "summary",
         blank=True,
         max_length=255,
         help_text="A summary which should include a description of the incident that led to the ban",
     )
-    when_submitted = models.DateField(
-        "date submitted",
-        blank=True,
-        null=True,
-        help_text="The date and time that the customer submitted the request",
+    start_date = models.DateField(
+        "start date",
+        default=date.today,
+        help_text="The date and time that the ban began or will begin",
     )
     submitter = models.ForeignKey(
-        Staffmember,
-            verbose_name="staff member",
+        settings.AUTH_USER_MODEL,
+        verbose_name="submitter",
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        help_text="The staff members who is assigned to this appontment or who did the banaction",
+        help_text="The user who entered this information",
     )
-    when_lifted = models.DateField(
-        "when lifted",
-        help_text="The date that the banaction is lifted. This is required so use a far-distant date for indefinite bans",
+    expiration = models.DateField(
+        "expiration",
+        default=lambda: (now() + timedelta(years=10)).date,
+        help_text="The date as of which the customer is no longer banned. The default is 10 years hence which is effectively indefinite",
     )
 
     def __str__(self):
@@ -76,50 +77,12 @@ class Banaction(models.Model):
         if self.title:
             return self.title
         else:
-            return "{}: {}: {}".format(
-                self.customer, self.when_lifted, self.banaction_summary
+            return "{} until {}".format(
+                self.customer, self.expiration
             )
 
     class Meta:
-        ordering = ("when_submitted",)
-
-
-class Banactionnote(models.Model):
-
-    banaction = models.ForeignKey(
-        Banaction,
-        on_delete=models.SET_NULL,
-        null=True,
-        help_text="The banaction to which this note applies",
-    )
-    when = models.DateField(
-        "when",
-        null=True,
-        default=date.today,
-        help_text="The effective date of the information in the note ( rather than the date the note was made )",
-    )
-    content = models.CharField(
-        "content",
-        max_length=125,
-        blank=True,
-        help_text="The text of the note.  Optional if a category is chosen and no other details are necessary.",
-    )
-
-    def __str__(self):
-        str = self.when.isoformat() + ": "
-        if self.content:
-            str = str + self.content + ": "
-        if len(str) > 2:
-            str = str[0:-2]
-        if len(str) > 50:
-            str = str[0:45] + " ..."
-
-        return str
-
-    class Meta:
-        ordering = [
-            "-when",
-        ]
+        ordering = ("-expiration",)
 
 
 class Customerphoto(models.Model):
