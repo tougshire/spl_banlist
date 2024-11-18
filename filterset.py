@@ -13,7 +13,7 @@ class BanactionFilter(StoexFilterSet):
 
     combined_text_search = CrossFieldSearchFilter(
         label="Text Search",
-        field_name="title,customer__name_full,customer__name_prefered,summary,submitter__name_full",
+        field_name="title,customer__name_full,customer__name_prefered,summary",
         lookup_expr="icontains",
     )
     customer = django_filters.ModelMultipleChoiceFilter(
