@@ -1,8 +1,8 @@
 <div class="detail">
   <div class="detail">
   {% include 'touglates/detail_field.html' with label=banaction_labels.title field=object.title %}
-  {% url 'spl_banlist:bannee-update' object.bannee.pk as bannee_url %}
-  {% include 'touglates/detail_field.html' with label=banaction_labels.bannee field='<a href="'|add:bannee_url|add:'" target="_blank">'|add:object.bannee.name_full|add:'</a>'|safe %}
+  {% url 'spl_banlist:customer-update' object.customer.pk as customer_url %}
+  {% include 'touglates/detail_field.html' with label=banaction_labels.customer field='<a href="'|add:customer_url|add:'" target="_blank">'|add:object.customer.name_full|add:'</a>'|safe %}
   {% include 'touglates/detail_field.html' with label=banaction_labels.when_submitted field=object.when_submitted %}
   {% include 'touglates/detail_field.html' with label=banaction_labels.submitter field=object.submitter %}
   {% include 'touglates/detail_field.html' with label=banaction_labels.when_lifted field=object.when_lifted %}
@@ -16,10 +16,10 @@
 
   <h3>Photos</h3>
   <div class="attached-gallery">
-      {% for banneephoto in object.bannee.banneephoto_set.all %}
-        <div class="relatedset relatedbanneephoto attached-photo id="div_banneenote-{{ forloop.counter0 }}">
-          <div class="attached-photo-title">{{ banneephoto }}</div>
-          <div class="attached-photo-img"><img src="{{ banneephoto.photofile.url }}"></div>
+      {% for customerphoto in object.customer.customerphoto_set.all %}
+        <div class="relatedset relatedcustomerphoto attached-photo id="div_customernote-{{ forloop.counter0 }}">
+          <div class="attached-photo-title">{{ customerphoto }}</div>
+          <div class="attached-photo-img"><img src="{{ customerphoto.photofile.url }}"></div>
         </div>
       {% endfor %}
   </div>

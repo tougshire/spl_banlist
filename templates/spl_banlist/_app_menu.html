@@ -12,14 +12,14 @@
     {% endif %}
   {% endif %}
 
- {% if perms.spl_banlist.view_bannee %}
-  {% if 'bannee-' in request.resolver_match.url_name %}
-    <div class="menu-bannee menu-here">
-      <a href="{% url 'spl_banlist:bannee-list' %}">Bannees</a>
+ {% if perms.spl_banlist.view_customer %}
+  {% if 'customer-' in request.resolver_match.url_name %}
+    <div class="menu-customer menu-here">
+      <a href="{% url 'spl_banlist:customer-list' %}">Customers</a>
     </div>
   {% else %}
-    <div class="menu-bannee">
-      <a href="{% url 'spl_banlist:bannee-list' %}">Bannees</a>
+    <div class="menu-customer">
+      <a href="{% url 'spl_banlist:customer-list' %}">Customers</a>
     </div>
   {% endif %}
 {% endif %}

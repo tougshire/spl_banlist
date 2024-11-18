@@ -21,14 +21,14 @@ from django_filters_stoex.views import FilterView
 from spl_members.models import Member as Staffmember
 from touglates.views import make_labels
 
-from .filterset import BanactionFilter, BanneeFilter
+from .filterset import BanactionFilter, CustomerFilter
 from .forms import (
     BanactionBanactionnoteFormset,
     BanactionForm,
-    BanneeBanneephotoFormset,
-    BanneeForm,
+    CustomerCustomerphotoFormset,
+    CustomerForm,
 )
-from .models import Banaction, Banactionnote, Bannee
+from .models import Banaction, Banactionnote, Customer
 
 logger = logging.getLogger(__name__)
 
@@ -222,17 +222,17 @@ class BanactionClose(PermissionRequiredMixin, DetailView):
     template_name = "spl_banlist/banaction_closer.html"
 
 
-class BanneeCreate(PermissionRequiredMixin, CreateView):
-    permission_required = "spl_banlist.add_bannee"
-    model = Bannee
-    form_class = BanneeForm
-    template_name = "spl_banlist/bannee_create.html"
+class CustomerCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "spl_banlist.add_customer"
+    model = Customer
+    form_class = CustomerForm
+    template_name = "spl_banlist/customer_create.html"
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
         formsetclasses = {
-            "banneephotos": BanneeBanneephotoFormset,
+            "customerphotos": CustomerCustomerphotoFormset,
         }
 
         for formsetkey, formsetclass in formsetclasses.items():
@@ -249,7 +249,7 @@ class BanneeCreate(PermissionRequiredMixin, CreateView):
         self.object = form.save(commit=False)
 
         formsetclasses = {
-            "banneephotos": BanneeBanneephotoFormset,
+            "customerphotos": CustomerCustomerphotoFormset,
         }
         formsetdata = {}
         formsets_valid = True
@@ -284,21 +284,21 @@ class BanneeCreate(PermissionRequiredMixin, CreateView):
                 },
             )
         return reverse_lazy(
-            "spl_banlist:bannee-detail", kwargs={"pk": self.object.pk}
+            "spl_banlist:customer-detail", kwargs={"pk": self.object.pk}
         )
 
 
-class BanneeUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = "spl_banlist.change_bannee"
-    model = Bannee
-    form_class = BanneeForm
-    template_name = "spl_banlist/bannee_update.html"
+class CustomerUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = "spl_banlist.change_customer"
+    model = Customer
+    form_class = CustomerForm
+    template_name = "spl_banlist/customer_update.html"
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
         formsetclasses = {
-            "banneephotos": BanneeBanneephotoFormset,
+            "customerphotos": CustomerCustomerphotoFormset,
         }
 
         for formsetkey, formsetclass in formsetclasses.items():
@@ -317,7 +317,7 @@ class BanneeUpdate(PermissionRequiredMixin, UpdateView):
         self.object = form.save()
 
         formsetclasses = {
-            "banneephotos": BanneeBanneephotoFormset,
+            "customerphotos": CustomerCustomerphotoFormset,
         }
         formsetdata = {}
         formsets_valid = True
@@ -351,35 +351,35 @@ class BanneeUpdate(PermissionRequiredMixin, UpdateView):
                 },
             )
         return reverse_lazy(
-            "spl_banlist:bannee-detail", kwargs={"pk": self.object.pk}
+            "spl_banlist:customer-detail", kwargs={"pk": self.object.pk}
         )
 
 
-class BanneeDetail(PermissionRequiredMixin, DetailView):
-    permission_required = "spl_banlist.view_bannee"
-    model = Bannee
+class CustomerDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "spl_banlist.view_customer"
+    model = Customer
 
     def get_context_data(self, **kwargs):
 
-        print ('tp24bfi02', self.get_object().banneephoto_set.all())
+        print ('tp24bfi02', self.get_object().customerphoto_set.all())
 
         context_data = super().get_context_data(**kwargs)
 
-        context_data["bannee_labels"] = make_labels(Bannee)
+        context_data["customer_labels"] = make_labels(Customer)
 
         return context_data
 
 
-class BanneeDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = "spl_banlist.delete_bannee"
-    model = Bannee
-    success_url = reverse_lazy("spl_banlist:bannee-list")
+class CustomerDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = "spl_banlist.delete_customer"
+    model = Customer
+    success_url = reverse_lazy("spl_banlist:customer-list")
 
 
-class BanneeList(PermissionRequiredMixin, FilterView):
-    permission_required = "spl_banlist.view_bannee"
-    filterset_class = BanneeFilter
-    filterstore_urlname = "spl_banlist:bannee-filterstore"
+class CustomerList(PermissionRequiredMixin, FilterView):
+    permission_required = "spl_banlist.view_customer"
+    filterset_class = CustomerFilter
+    filterstore_urlname = "spl_banlist:customer-filterstore"
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -387,7 +387,7 @@ class BanneeList(PermissionRequiredMixin, FilterView):
         context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
         context_data["filterstore_save"] = FilterstoreSaveForm()
         context_data["count"] = self.object_list.count()
-        context_data["labels"] = make_labels(Bannee)
+        context_data["labels"] = make_labels(Customer)
         return context_data
 
 

@@ -3,24 +3,24 @@ from django.db import models
 from spl_members.models import Member as Staffmember
 from django.utils.timezone import now
 
-class Bannee(models.Model):
+class Customer(models.Model):
     name_full = models.CharField(
-        "name", max_length=80, help_text="The name of the bannee"
+        "name", max_length=80, help_text="The name of the customer"
     )
     name_prefered = models.CharField(
         "prefered name",
         max_length=30,
         blank=True,
-        help_text="Nickname, or a name the bannee prefers in place of their first name",
+        help_text="Nickname, or a name the customer prefers in place of their first name",
     )
     description = models.TextField(
         "description",
         blank=True,
-        help_text="A description of the bannee"
+        help_text="A description of the customer"
     )
 
     def banned_until(self):
-        active_bans = Banaction.objects.filter(bannee=self,when_lifted__gt=now().date()).order_by("-when_lifted")
+        active_bans = Banaction.objects.filter(customer=self,when_lifted__gt=now().date()).order_by("-when_lifted")
         if active_bans.exists():
             return active_bans.first().when_lifted
         return None
@@ -39,12 +39,12 @@ class Banaction(models.Model):
         blank=True,
         help_text="A title for the banaction (ex, Benjamin, three weeks, disruptive behavior )",
     )
-    bannee = models.ForeignKey(
-        Bannee,
+    customer = models.ForeignKey(
+        Customer,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        help_text="The bannee for  whom the apointment is made",
+        help_text="The customer for  whom the apointment is made",
     )
     banaction_summary = models.TextField(
         "action summary",
@@ -56,7 +56,7 @@ class Banaction(models.Model):
         "date submitted",
         blank=True,
         null=True,
-        help_text="The date and time that the bannee submitted the request",
+        help_text="The date and time that the customer submitted the request",
     )
     submitter = models.ForeignKey(
         Staffmember,
@@ -77,7 +77,7 @@ class Banaction(models.Model):
             return self.title
         else:
             return "{}: {}: {}".format(
-                self.bannee, self.when_lifted, self.banaction_summary
+                self.customer, self.when_lifted, self.banaction_summary
             )
 
     class Meta:
@@ -122,7 +122,7 @@ class Banactionnote(models.Model):
         ]
 
 
-class Banneephoto(models.Model):
+class Customerphoto(models.Model):
 
     title = models.CharField(
         "title",
@@ -130,11 +130,11 @@ class Banneephoto(models.Model):
         max_length=80,
         help_text="An optional title for the photo"
     )
-    bannee = models.ForeignKey(
-        Bannee,
+    customer = models.ForeignKey(
+        Customer,
         on_delete=models.SET_NULL,
         null=True,
-        help_text="The bannee to whom this note applies",
+        help_text="The customer to whom this note applies",
     )
     photofile = models.ImageField(
         "photo file",
@@ -149,14 +149,14 @@ class Banneephoto(models.Model):
     is_primary = models.BooleanField(
         "is primary",
         default=False,
-        help_text="If this is a primary photo for this bannee "
+        help_text="If this is a primary photo for this customer "
     )
 
     def __str__(self):
         if self.title:
             return self.title
         else:
-            return '{} - {}'.format(self.bannee, self.when_taken.isoformat())
+            return '{} - {}'.format(self.customer, self.when_taken.isoformat())
 
     class Meta:
         ordering = [
@@ -164,12 +164,12 @@ class Banneephoto(models.Model):
             "-when_taken",
         ]
 
-class Banneenote(models.Model):
-    bannee = models.ForeignKey(
-        Bannee,
+class Customernote(models.Model):
+    customer = models.ForeignKey(
+        Customer,
         on_delete=models.SET_NULL,
         null=True,
-        help_text="The bannee to which this note applies",
+        help_text="The customer to which this note applies",
     )
     when = models.DateField(
         "when",

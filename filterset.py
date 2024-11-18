@@ -2,7 +2,7 @@ from django.http import QueryDict
 import django_filters
 
 from django_filters_stoex.filterset import StoexFilterSet
-from .models import Banaction, Bannee
+from .models import Banaction, Customer
 from django.db import models
 from django import forms
 from django_filters_stoex.filters import CrossFieldSearchFilter,ExpandedDateRangeFilter
@@ -13,14 +13,14 @@ class BanactionFilter(StoexFilterSet):
 
     combined_text_search = CrossFieldSearchFilter(
         label="Text Search",
-        field_name="title,bannee__name_full,bannee__name_prefered,banaction_summary,submitter__name_full",
+        field_name="title,customer__name_full,customer__name_prefered,banaction_summary,submitter__name_full",
         lookup_expr="icontains",
     )
-    bannee = django_filters.ModelMultipleChoiceFilter(
+    customer = django_filters.ModelMultipleChoiceFilter(
         widget=DropdownSelectMultiple,
-        field_name="bannee",
-        label="Bannee",
-        queryset=Bannee.objects.all(),
+        field_name="customer",
+        label="Customer",
+        queryset=Customer.objects.all(),
     )
     banaction_summary = django_filters.CharFilter(
         field_name="banaction_summary",
@@ -35,7 +35,7 @@ class BanactionFilter(StoexFilterSet):
         fields=(
             "when_lifted",
             "when_submitted",
-            "bannee",
+            "customer",
             "staffer",
         ),
     )
@@ -45,7 +45,7 @@ class BanactionFilter(StoexFilterSet):
         fields = []
 
 
-class BanneeFilter(StoexFilterSet):
+class CustomerFilter(StoexFilterSet):
 
     name_search = CrossFieldSearchFilter(
         label="Text Search",
@@ -67,5 +67,5 @@ class BanneeFilter(StoexFilterSet):
     )
 
     class Meta:
-        model = Bannee
+        model = Customer
         fields = []

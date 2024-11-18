@@ -46,8 +46,8 @@
         {% if 'title' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field=banaction_labels.title %}
         {% endif %}
-        {% if 'bannee' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=banaction_labels.bannee %}
+        {% if 'customer' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field=banaction_labels.customer %}
         {% endif %}
         {% if 'banaction_summary' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field=banaction_labels.banaction_summary %}
@@ -65,8 +65,8 @@
           {% if 'title' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=banaction %}
           {% endif %}
-          {% if 'bannee' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=banaction.bannee %}
+          {% if 'customer' in show_columns or not show_columns %}
+            {% include 'touglates/list_field.html' with field=banaction.customer %}
           {% endif %}
           {% if 'when_submitted' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=banaction.banaction_summary %}

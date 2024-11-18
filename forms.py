@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from spl_members.models import Member as Staffmember
 from touglates.widgets import TouglatesRelatedSelect
-from .models import Banaction, Banactionnote, Bannee, Banneenote, Banneephoto
+from .models import Banaction, Banactionnote, Customer, Customernote, Customerphoto
 from django.contrib.admin.widgets import AdminDateWidget
 
 
@@ -23,18 +23,18 @@ class BanactionForm(forms.ModelForm):
         model = Banaction
         fields = [
             "title",
-            "bannee",
+            "customer",
             "banaction_summary",
             "when_submitted",
             "submitter",
             "when_lifted",
         ]
         widgets = {
-            "bannee": TouglatesRelatedSelect(
+            "customer": TouglatesRelatedSelect(
                 related_data={
-                    "model_name": "Bannee",
+                    "model_name": "Customer",
                     "app_name": "spl_banlist",
-                    "add_url": reverse_lazy("spl_banlist:bannee-popup"),
+                    "add_url": reverse_lazy("spl_banlist:customer-popup"),
                 },
             ),
             "staffer": TouglatesRelatedSelect(
@@ -55,9 +55,9 @@ class BanactionnoteForm(forms.ModelForm):
         fields = ["banaction", "when", "content"]
 
 
-class BanneeForm(forms.ModelForm):
+class CustomerForm(forms.ModelForm):
     class Meta:
-        model = Bannee
+        model = Customer
         fields = [
             "name_full",
             "name_prefered",
@@ -66,17 +66,17 @@ class BanneeForm(forms.ModelForm):
 
 
 
-class BanneenoteForm(forms.ModelForm):
+class CustomernoteForm(forms.ModelForm):
     class Meta:
-        model = Banneenote
-        fields = ["bannee", "when", "content"]
+        model = Customernote
+        fields = ["customer", "when", "content"]
 
 
-class BanneephotoForm(forms.ModelForm):
+class CustomerphotoForm(forms.ModelForm):
     class Meta:
         fields=[
             "title",
-            "bannee",
+            "customer",
             "photofile",
             "when_taken",
         ]
@@ -84,6 +84,6 @@ class BanneephotoForm(forms.ModelForm):
 BanactionBanactionnoteFormset = inlineformset_factory(
     Banaction, Banactionnote, form=BanactionnoteForm, extra=10
 )
-BanneeBanneephotoFormset = inlineformset_factory(
-    Bannee, Banneephoto, form=BanneephotoForm, extra=10
+CustomerCustomerphotoFormset = inlineformset_factory(
+    Customer, Customerphoto, form=CustomerphotoForm, extra=10
 )

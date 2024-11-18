@@ -1,7 +1,7 @@
 {% extends './_form.html' %}
 {% block content %}
   {% if form.errors %}{{ form.errors }}{% endif %}
-  <form id="form_bannee" method="POST" enctype="multipart/form-data">
+  <form id="form_customer" method="POST" enctype="multipart/form-data">
     <input type="hidden" name='opener' id="input_opener">
     <div class="form">
       {% csrf_token %}
@@ -29,40 +29,40 @@
       </div>
     {% endfor %}
       <div class="formsetaccessory formsetaccessory--titlediv">
-        <div><h3 id="h3_banneephotos" class="formsetaccessory__titleel">Photo</h3></div>
-        <div><button type="button" id="button_addbanneephoto" class="formsetaccessory__button js_vmargins" data-vmarginsource="h3_banneephotos">Add Photo</button></div>
+        <div><h3 id="h3_customerphotos" class="formsetaccessory__titleel">Photo</h3></div>
+        <div><button type="button" id="button_addcustomerphoto" class="formsetaccessory__button js_vmargins" data-vmarginsource="h3_customerphotos">Add Photo</button></div>
       </div>
 
-      {{ banneephotos.management_form }}
-      {% if banneephotos.errors %}{{ banneephotos.errors }}{% endif %}
-      {% for banneephotoform in banneephotos.forms %}
-        {% if banneephotoform.errors %}{{ banneephotoform.errors }}{% endif %}
-        {% if banneephotoform.id.value  %}
-          <div id="div_banneephotoform_{{ banneephotoform.id.value }}" class="banneephotoformsetform"  >
-            {% for hiddenfield in banneephotoform.hidden_fields %}
+      {{ customerphotos.management_form }}
+      {% if customerphotos.errors %}{{ customerphotos.errors }}{% endif %}
+      {% for customerphotoform in customerphotos.forms %}
+        {% if customerphotoform.errors %}{{ customerphotoform.errors }}{% endif %}
+        {% if customerphotoform.id.value  %}
+          <div id="div_customerphotoform_{{ customerphotoform.id.value }}" class="customerphotoformsetform"  >
+            {% for hiddenfield in customerphotoform.hidden_fields %}
               {{ hiddenfield }}
             {% endfor %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.title %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.when_taken %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.photofile %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.DELETE %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.title %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.when_taken %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.photofile %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.DELETE %}
           </div>
         {% else %}
-          <div class="banneephotoformsetform banneephotonewform" >
-            {% for hiddenfield in banneephotoform.hidden_fields %}
+          <div class="customerphotoformsetform customerphotonewform" >
+            {% for hiddenfield in customerphotoform.hidden_fields %}
               {{ hiddenfield }}
             {% endfor %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.title %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.when_taken %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.photofile %}
-            {% include 'touglates/form_field.html' with field=banneephotoform.DELETE %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.title %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.when_taken %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.photofile %}
+            {% include 'touglates/form_field.html' with field=customerphotoform.DELETE %}
           </div>
         {% endif %}
       {% endfor %}
       <table>
-        {% for banneephoto in object.banneephoto_set.all %}
-          <tr id="tr_banneephoto_{{ banneephoto.id }}">
-            <td><button type="button" id="button_editbanneephoto_{{ banneephoto.id }}" data-formid="div_banneephotoform_{{ banneephoto.id }}" data-displayid="tr_banneephoto_{{ banneephoto.id }}" class="banneephoto_edit_button">edit</button></td><td>{{ banneephoto.when }}</td><td>{{ banneephoto.content }}</td>
+        {% for customerphoto in object.customerphoto_set.all %}
+          <tr id="tr_customerphoto_{{ customerphoto.id }}">
+            <td><button type="button" id="button_editcustomerphoto_{{ customerphoto.id }}" data-formid="div_customerphotoform_{{ customerphoto.id }}" data-displayid="tr_customerphoto_{{ customerphoto.id }}" class="customerphoto_edit_button">edit</button></td><td>{{ customerphoto.when }}</td><td>{{ customerphoto.content }}</td>
           </tr>
         {% endfor %}
       </table>
@@ -110,7 +110,7 @@
         }
       }
     }
-    enableRelatedFormsets("banneephotoformsetform","banneephoto_edit_button","banneephotonewform", "button_addbanneephoto")
+    enableRelatedFormsets("customerphotoformsetform","customerphoto_edit_button","customerphotonewform", "button_addcustomerphoto")
   </script>
 {% endblock %}
 
