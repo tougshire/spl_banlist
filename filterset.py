@@ -60,7 +60,6 @@ class CustomerFilter(StoexFilterSet):
 
     orderbyfields = django_filters.OrderingFilter(
         fields=(
-            "expiration",
             "name_prefered",
             "name_full",
         ),
