@@ -55,11 +55,14 @@
         {% if 'expiration' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field=banaction_labels.expiration %}
         {% endif %}
+        {% if 'photo' in show_columns or not show_columns %}
+          <div class="list-photo list-field field column">Photo</div>
+        {% endif %}
 
       </div>
 
       {% for banaction in filter.qs %}
-        <div class="row">
+        <div class="row{% if banaction.is_expired %} expired{% endif %}">
           <div class="listfield"><a href="{% url 'spl_banlist:banaction-detail' banaction.pk %}">view</a></div>
           <div class="listfield"><a href="{% url 'spl_banlist:banaction-update' banaction.pk %}">edit</a></div>
           {% if 'title' in show_columns or not show_columns %}
@@ -74,6 +77,12 @@
           {% if 'submitter' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=banaction.expiration %}
           {% endif %}
+          {% if 'photo' in show_columns or not show_columns %}
+            <div class="list-photo list-field field column">
+              {% if banaction.get_photo %}
+                <a class="list-photo" href="{{ banaction.get_photo.photofile.url }}" target="_blank"><img src="{{ banaction.get_photo.photofile.url }}" %} class="list-photo"></a></div>
+              {% endif %}
+          {% endif %}
 
         </div>
       {% endfor %}
@@ -85,5 +94,14 @@
   {% endblock %}
   {% block bottomscript %}
     {{ block.super }}
+    <script>
+      var photolinks = document.querySelectorAll("img.list-photo")
+      for(i=0; i<photolinks.length; i++) {
+        photolinks[i].addEventListener("click", function(e) {
+            e.preventDefault()
+            window.open(e.target.parentNode.getAttribute("href"), "customer", 'height=400,width=400')
+        });
+      }
+      </script>
 
   {% endblock %}

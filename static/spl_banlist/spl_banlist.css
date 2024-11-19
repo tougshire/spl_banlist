@@ -190,3 +190,14 @@ div.attached-gallery > div {
 div.attached-gallery img {
     max-width:90%;
 }
+
+div.expired {
+    color:grey;
+    font-style:italic;
+}
+div.list-photo {
+    width:5%;
+}
+div.list-photo img {
+    width:95%;
+}

@@ -7,20 +7,33 @@
   {% include 'touglates/detail_field.html' with label=banaction_labels.submitter field=object.submitter %}
   {% include 'touglates/detail_field.html' with label=banaction_labels.expiration field=object.expiration %}
 
-  <h3>Customer Photos</h3>
+  <h3>Customer Details</h3>
+
+  {% include 'touglates/detail_field.html' with label="Description:" field=object.customer.description %}
   <div class="attached-gallery">
-      {% for customerphoto in object.customer.customerphoto_set.all %}
-        <div class="relatedset relatedcustomerphoto attached-photo id="div_customernote-{{ forloop.counter0 }}">
-          <div class="attached-photo-title">{{ customerphoto }}</div>
-          <div class="attached-photo-img"><img src="{{ customerphoto.photofile.url }}"></div>
-        </div>
-      {% endfor %}
+    {% for customerphoto in object.customer.customerphoto_set.all %}
+      <div class="relatedset relatedcustomerphoto attached-photo id="div_customernote-{{ forloop.counter0 }}">
+        <div class="attached-photo-title">{{ customerphoto }}</div>
+        <div class="attached-photo-img"><a href="{{ customerphoto.photofile.url }}"><img class="detail-photo" src="{{ customerphoto.photofile.url }}"></a></div>
+      </div>
+    {% endfor %}
   </div>
 
   <h3>Customer Notes</h3>
-      {% for customernote in object.customer.customernote_set.all %}
-        <div class="relatedset relatedcustomernote id="div_customernote-{{ forloop.counter0 }}">
-          {% include 'touglates/detail_field.html' with label="Note:" field1=customernote.when field2=customernote.content %}
-        </div>
-      {% endfor %}
+  {% for customernote in object.customer.customernote_set.all %}
+    <div class="relatedset relatedcustomernote id="div_customernote-{{ forloop.counter0 }}">
+      {% include 'touglates/detail_fields.html' with label="Note:" field_1=customernote.when field_2=customernote.content %}
+    </div>
+  {% endfor %}
 </div>
+
+<script>
+  var photolinks = document.querySelectorAll("img.detail-photo")
+  for(i=0; i<photolinks.length; i++) {
+    photolinks[i].addEventListener("click", function(e) {
+        e.preventDefault()
+        window.open(e.target.parentNode.getAttribute("href"), "customer", 'height=400,width=400')
+    });
+  }
+  </script>
+

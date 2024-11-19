@@ -79,6 +79,12 @@ class Banaction(models.Model):
             return False
         return True
 
+    def get_photo(self):
+        try:
+            return self.customer.customerphoto_set.first()
+        except:
+            return None
+
     def __str__(self):
         ordering = self.start_date
         if self.title:
