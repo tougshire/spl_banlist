@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 from django.db import models
 from spl_members.models import Member as Staffmember
-from django.utils.timezone import now
+from django.utils.timezone import localtime, now
 from django.conf import settings
 
 def seven_days_hence():
@@ -75,7 +75,7 @@ class Banaction(models.Model):
         help_text="The date as of which the customer is no longer banned. For an indefinite ban, set the date far in the future (ie ten years)",
     )
     def is_expired(self):
-        if self.expiration > now().date():
+        if self.expiration > localtime(now()).date():
             return False
         return True
 
@@ -86,12 +86,14 @@ class Banaction(models.Model):
             return None
 
     def __str__(self):
-        ordering = self.start_date
+
+        expired = '(expired)' if self.is_expired() else ""
+
         if self.title:
-            return self.title
+            return "{} {}".format(self.title, expired)
         else:
             return "{} until {} {}".format(
-                self.customer, self.expiration, '(expired)' if self.is_expired() else ""
+                self.customer, self.expiration, expired
             )
 
     class Meta:
