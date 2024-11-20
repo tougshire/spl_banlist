@@ -41,7 +41,7 @@ class Banaction(models.Model):
         "title",
         max_length=255,
         blank=True,
-        help_text="A title for the ban (ex, Benjamin, three weeks, disruptive behavior ).  This is optional. The date and customer's name will be used if left blank",
+        help_text="A title for the ban. This is optional.  Leave blank to accept the default display",
     )
     customer = models.ForeignKey(
         Customer,
