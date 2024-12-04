@@ -65,6 +65,19 @@
       {% endif %}
     {% endif %}
 
+  {% if perms.view_banaction %}
+    {% if 'banaction-csv' == request.resolver_match.url_name %}
+      <div class="menu-banaction menu-csv menu-here">
+          Csv
+      </div>
+    {% else %}
+      <div class="menu-banaction menu-csv">
+        <a href="{% url 'spl_banlist:banaction-csv' %}">Csv</a>
+      </div>
+    {% endif %}
+  {% endif %}
+
+
 
   </div>
 

@@ -27,6 +27,7 @@ from .forms import (
     CustomerCustomerphotoFormset,
     CustomerCustomernoteFormset,
     CustomerForm,
+    CSVOptionForm,
 )
 from .models import Banaction, Customer
 
@@ -209,6 +210,48 @@ class BanactionClose(PermissionRequiredMixin, DetailView):
     model = Banaction
     template_name = "spl_banlist/banaction_closer.html"
 
+class BanactionCSV(PermissionRequiredMixin, FilterView):
+
+    permission_required = "spl_banlist.view_banaction"
+    filterset_class = BanactionFilter
+    template_name = "spl_banlist/csv.txt"
+    content_type = "text/csv"
+    headers = {"Content-Disposition": 'attachment; filename="spl_banlist.csv"'}
+
+    def dispatch(self, *args, **kwargs):
+        response = super().dispatch(*args, **kwargs)
+        response.headers = {
+            "Content-Disposition": 'attachment; filename="spl_banlist.csv"'
+        }
+        return response
+
+    def get_context_data(self, *args, **kwargs):
+
+        context_data = super().get_context_data(*args, **kwargs)
+
+        data = [
+            [
+                "Customer",
+                "Summary",
+                "Start Date",
+                "Expiration",
+                "Submitter",
+                "Photo",
+            ]
+        ]
+        for banaction in context_data["filter"].qs:
+            data.append(
+                [
+                    banaction.customer,
+                    banaction.summary,
+                    banaction.start_date,
+                    banaction.expiration,
+                    banaction.submitter,
+                    banaction.get_photo().photofile.url,
+                ]
+            )
+        context_data["data"] = data
+        return context_data
 
 class CustomerCreate(PermissionRequiredMixin, CreateView):
     permission_required = "spl_banlist.add_customer"

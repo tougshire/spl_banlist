@@ -35,6 +35,20 @@ class Customer(models.Model):
     class Meta:
         ordering = ("name_full",)
 
+class Location(models.Model):
+    name_full = models.CharField(
+        "location name", max_length=40, help_text="The full name of the location"
+    )
+    name_abbr = models.CharField(
+        "abbreviated name", max_length=5, help_text="An abbreviation of the name"
+    )
+
+    def __str__(self):
+        return self.name_full
+
+    class Meta:
+        ordering = ("name_full",)
+
 class Banaction(models.Model):
 
     title = models.CharField(
@@ -172,3 +186,56 @@ class Customernote(models.Model):
             str = str[0:45] + " ..."
 
         return str
+
+class Incident(models.Model):
+
+    customer = models.ForeignKey(
+        Customer,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        help_text="The customer involved in this incident",
+    )
+    summary = models.TextField(
+        "summary",
+        blank=True,
+        max_length=255,
+        help_text="A summary of the incident",
+    )
+    when = models.DateTimeField(
+        "date/time",
+        default=now,
+        help_text="The date and time of the incident",
+    )
+    location = models.ForeignKey(
+        Location,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text="The location of the incident"
+    )
+    submitter = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="submitter",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        help_text="The user who entered this information",
+        related_name='incident'
+    )
+
+    def get_photo(self):
+        try:
+            return self.customer.customerphoto_set.first()
+        except:
+            return None
+
+    def __str__(self):
+
+            return "{} {}".format(
+                self.customer, self.when
+            )
+
+    class Meta:
+        ordering = ("-when",)
+

@@ -1,0 +1,31 @@
+<div class="form">
+  {% if form.errors %}{{ form.errors }}{% endif %}
+  {% for message in messages %} {{ message }} {% endfor %}
+  <form id="form_incident" method="POST" enctype="multipart/form-data">
+  {{ form.media }}
+    {% csrf_token %}
+
+      <div id="div_customer">
+        {% include 'touglates/form_field.html' with field=form.customer %}
+      </div>
+      <div id="div_summary">
+        {% include 'touglates/form_field.html' with field=form.summary %}
+      </div>
+      <div id="div_start_date">
+        {% include 'touglates/form_field.html' with field=form.when %}
+      </div>
+      <div id="div_expiration">
+        {% include 'touglates/form_field.html' with field=form.location %}
+      </div>
+      <div id="div_submitter">
+        {% include 'touglates/form_field.html' with field=form.submitter %}
+      </div>
+      <button type="Submit">Submit</button>
+
+    </div>
+
+  </form>
+
+
+
+

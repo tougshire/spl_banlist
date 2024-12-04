@@ -1,0 +1,40 @@
+<div class="detail">
+  <div class="detail">
+  {% include 'touglates/detail_field.html' with label=incident_labels.title field=object.title %}
+  {% url 'spl_banlist:customer-update' object.customer.pk as customer_url %}
+  {% include 'touglates/detail_field.html' with label=incident_labels.customer field='<a href="'|add:customer_url|add:'" target="_blank">'|add:object.customer.name_full|add:'</a>'|safe %}
+  {% include 'touglates/detail_field.html' with label=incident_labels.summary field=object.summary %}
+  {% include 'touglates/detail_field.html' with label=incident_labels.when field=object.when %}
+  {% include 'touglates/detail_field.html' with label=incident_labels.location field=object.location %}
+  {% include 'touglates/detail_field.html' with label=incident_labels.submitter field=object.submitter %}
+
+  <h3>Customer Details</h3>
+
+  {% include 'touglates/detail_field.html' with label="Description:" field=object.customer.description %}
+  <div class="attached-gallery">
+    {% for customerphoto in object.customer.customerphoto_set.all %}
+      <div class="relatedset relatedcustomerphoto attached-photo id="div_customernote-{{ forloop.counter0 }}">
+        <div class="attached-photo-title">{{ customerphoto }}</div>
+        <div class="attached-photo-img"><a href="{{ customerphoto.photofile.url }}"><img class="detail-photo" src="{{ customerphoto.photofile.url }}"></a></div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <h3>Customer Notes</h3>
+  {% for customernote in object.customer.customernote_set.all %}
+    <div class="relatedset relatedcustomernote id="div_customernote-{{ forloop.counter0 }}">
+      {% include 'touglates/detail_fields.html' with label="Note:" field_1=customernote.when field_2=customernote.content %}
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+  var photolinks = document.querySelectorAll("img.detail-photo")
+  for(i=0; i<photolinks.length; i++) {
+    photolinks[i].addEventListener("click", function(e) {
+        e.preventDefault()
+        window.open(e.target.parentNode.getAttribute("href"), "customer", 'height=400,width=400')
+    });
+  }
+  </script>
+

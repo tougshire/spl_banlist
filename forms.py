@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from spl_members.models import Member as Staffmember
 from touglates.widgets import TouglatesRelatedSelect
-from .models import Banaction, Customer, Customernote, Customerphoto
+from .models import Banaction, Customer, Customernote, Customerphoto, Incident
 from django.contrib.admin.widgets import AdminDateWidget
 
 
@@ -17,6 +17,18 @@ class CSVOptionForm(forms.Form):
         help_text="Download the result as a CSV file",
     )
 
+
+class IncidentForm(forms.ModelForm):
+
+    class Meta:
+        model=Incident
+        fields=[
+            "customer",
+            "summary",
+            "when",
+            "location",
+            "submitter",
+        ]   
 
 class BanactionForm(forms.ModelForm):
     class Meta:

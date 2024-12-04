@@ -1,0 +1,72 @@
+<div class="menu app-menu">
+
+  <div class="menu object-menu">
+
+    {% if perms.view_incident %}
+      {% if 'incident-list' == request.resolver_match.url_name %}
+        <div class="menu-incident menu-list menu-here">
+            List
+        </div>
+      {% else %}
+        <div class="menu-incident menu-list">
+          <a href="{% url 'spl_banlist:incident-list' %}">List</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.view_incident %}
+      {% if 'incident-detail' == request.resolver_match.url_name %}
+        <div class="menu-incident menu-detail menu-here">
+            View
+        </div>
+      {% elif object.pk %}
+        <div class="menu-incident menu-detail">
+          <a href="{% url 'spl_banlist:incident-detail' object.pk %}">View</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.add_incident %}
+      {% if 'incident-create' == request.resolver_match.url_name %}
+        <div class="menu-incident menu-here menu-create">
+          <button form="form_incident" class="menu-incident" type="submit" >Submit</button></form>
+        </div>
+      {% else %}
+        <div class="menu-incident menu-create">
+          <a href="{% url 'spl_banlist:incident-create' %}">Add</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.change_incident %}
+      {% if 'incident-update' == request.resolver_match.url_name %}
+        <div class="menu-incident menu-update menu-here">
+          <button type="submit" form="form_incident" class="menu-incident menu-here" >Submit Changes</button>
+        </div>
+      {% elif object.pk %}
+        <div class="menu-incident menu-update">
+          <a href="{% url 'spl_banlist:incident-update' object.pk %}">Edit</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.delete_incident %}
+      {% if 'incident-delete' == request.resolver_match.url_name %}
+        <div class="menu-incident menu-delete menu-here">
+          <form method="POST" action="{% url 'spl_banlist:incident-delete' object.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="menu-incident" >Confirm Delete</button>
+          </form>
+        </div>
+      {% elif object.pk %}
+        <div class="menu-incident menu-delete">
+          <a href="{% url 'spl_banlist:incident-delete' object.pk %}">Delete</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+
+  </div>
+
+
+</div>

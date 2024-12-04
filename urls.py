@@ -45,6 +45,11 @@ urlpatterns = [
         name="banaction-list",
     ),
     path(
+        "banaction/csv/",
+        views.BanactionCSV.as_view(),
+        name="banaction-csv",
+    ),
+    path(
         "banaction/<str:copied_from>/copied/",
         views.BanactionList.as_view(),
         name="banaction-copied",

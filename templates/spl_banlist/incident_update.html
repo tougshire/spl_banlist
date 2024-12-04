@@ -1,0 +1,14 @@
+s{% extends './_form.html' %}
+
+{% block content %}
+  {% include './incident_menu.html' %}
+  <h2>{{ object }}</h2>
+  {% include './incident_form.html' %}
+  {% include './incident_menu.html' %}
+
+{% endblock %}
+
+{% block bottomscript %}
+{{ block.super }}
+{% endblock %}
+
